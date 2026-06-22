@@ -1,785 +1,516 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Restituição de Golpes · Recupere seu patrimônio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #cc0000;
-            color: white;
-            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
-            padding: 2rem 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 1100px;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.12);
-            backdrop-filter: blur(2px);
-            padding: 2.5rem 2rem;
-            border-radius: 40px 12px 40px 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        h1, h2, h3, p, li, a, span, blockquote, .highlight, .card, .footer {
-            color: white !important;
-        }
-
-        /* HEADER com botão */
-        .header-top {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header-top h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            border-left: 6px solid #ffcccc;
-            padding-left: 1.2rem;
-            margin: 0;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .btn-solicitar-top {
-            display: inline-block;
-            background: white;
-            color: #cc0000 !important;
-            padding: 0.9rem 2.5rem;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-decoration: none;
-            border: 2px solid white;
-            transition: 0.15s;
-            box-shadow: 0 6px 0 #880000;
-            white-space: nowrap;
-            letter-spacing: 0.3px;
-        }
-
-        .btn-solicitar-top:hover {
-            background: #ffe6e6;
-            transform: scale(1.03);
-            color: #990000 !important;
-            box-shadow: 0 8px 0 #660000;
-        }
-
-        .subtitulo {
-            font-size: 1.3rem;
-            font-weight: 300;
-            opacity: 0.95;
-            margin-bottom: 2.5rem;
-            padding-left: 1.8rem;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 0.75rem;
-        }
-
-        .grid-destaques {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 2rem;
-            margin: 2.5rem 0 3rem 0;
-        }
-
-        .card {
-            background: rgba(200, 0, 0, 0.65);
-            backdrop-filter: blur(4px);
-            padding: 1.8rem 1.5rem;
-            border-radius: 28px 8px 28px 8px;
-            border: 1px solid rgba(255, 215, 215, 0.3);
-            box-shadow: 0 8px 0 rgba(120, 0, 0, 0.4);
-            transition: transform 0.15s ease, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 14px 0 rgba(100, 0, 0, 0.5);
-            background: rgba(220, 20, 20, 0.75);
-        }
-
-        .card h3 {
-            font-size: 1.7rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.01em;
-        }
-
-        .card p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        .destaque-numero {
-            font-size: 2.8rem;
-            font-weight: 800;
-            line-height: 1;
-            color: #ffdddd;
-            margin-right: 0.3rem;
-        }
-
-        .secao {
-            background: rgba(180, 0, 0, 0.55);
-            backdrop-filter: blur(2px);
-            padding: 2rem 2rem 1.8rem;
-            border-radius: 30px 8px 30px 8px;
-            margin: 2.5rem 0;
-            border-left: 6px solid #ffbbbb;
-        }
-
-        .secao h2 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .secao h2::before {
-            content: "⚖️";
-            font-size: 2rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        .lista-golpes {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .lista-golpes li {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 0.9rem 1.5rem;
-            border-radius: 60px 12px 60px 12px;
-            font-weight: 500;
-            border: 1px solid rgba(255, 200, 200, 0.25);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .lista-golpes li::before {
-            content: "▸";
-            font-size: 1.6rem;
-            color: #ffb0b0;
-            font-weight: 300;
-        }
-
-        .cta-box {
-            background: #d90000;
-            padding: 2rem 2.5rem;
-            border-radius: 50px 8px 50px 8px;
-            text-align: center;
-            margin: 2.8rem 0 1.5rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 12px 0 #770000;
-        }
-
-        .cta-box h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-
-        .cta-box p {
-            font-size: 1.3rem;
-            opacity: 0.95;
-            max-width: 600px;
-            margin: 0.5rem auto 0;
-        }
-
-        .botao-principal {
-            display: inline-block;
-            background: white;
-            color: #cc0000 !important;
-            padding: 0.9rem 3rem;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-decoration: none;
-            margin-top: 1.2rem;
-            border: 2px solid white;
-            transition: 0.15s;
-            box-shadow: 0 6px 0 #880000;
-        }
-
-        .botao-principal:hover {
-            background: #ffe6e6;
-            transform: scale(1.02);
-            color: #990000 !important;
-            box-shadow: 0 8px 0 #660000;
-        }
-
-        .depoimento {
-            font-style: italic;
-            background: rgba(120, 0, 0, 0.4);
-            padding: 1.8rem 2.2rem;
-            border-radius: 40px 8px 40px 8px;
-            margin: 1.8rem 0;
-            border: 1px solid rgba(255, 160, 160, 0.3);
-            font-size: 1.2rem;
-        }
-
-        .depoimento span {
-            display: block;
-            margin-top: 0.8rem;
-            font-style: normal;
-            font-weight: 600;
-            opacity: 0.9;
-        }
-
-        /* Seção de depoimentos em grid */
-        .depoimentos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.8rem;
-            margin: 2rem 0;
-        }
-
-        .depoimento-card {
-            background: rgba(120, 0, 0, 0.45);
-            padding: 1.8rem 2rem;
-            border-radius: 28px 8px 28px 8px;
-            border: 1px solid rgba(255, 200, 200, 0.2);
-            font-style: italic;
-            transition: transform 0.2s;
-        }
-
-        .depoimento-card:hover {
-            transform: scale(1.01);
-            background: rgba(140, 0, 0, 0.55);
-        }
-
-        .depoimento-card .cliente {
-            display: block;
-            margin-top: 0.8rem;
-            font-style: normal;
-            font-weight: 600;
-            opacity: 0.9;
-        }
-
-        .depoimento-card .estrelas {
-            color: #ffd700;
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Seção LGPD e Política de Privacidade */
-        .lgpd-box {
-            background: rgba(160, 0, 0, 0.5);
-            backdrop-filter: blur(3px);
-            padding: 2rem 2.2rem;
-            border-radius: 30px 8px 30px 8px;
-            margin: 2rem 0 1.5rem 0;
-            border: 1px solid rgba(255, 200, 200, 0.2);
-            box-shadow: 0 8px 0 rgba(80, 0, 0, 0.3);
-        }
-
-        .lgpd-box h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .lgpd-box h2::before {
-            content: "🔒";
-            font-size: 2rem;
-        }
-
-        .lgpd-box p {
-            font-size: 1.05rem;
-            opacity: 0.95;
-            margin-bottom: 0.8rem;
-        }
-
-        .lgpd-box ul {
-            list-style: none;
-            padding: 0;
-            margin: 0.8rem 0;
-        }
-
-        .lgpd-box ul li {
-            padding: 0.5rem 0 0.5rem 1.8rem;
-            position: relative;
-            opacity: 0.9;
-        }
-
-        .lgpd-box ul li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #ffdddd;
-            font-weight: 700;
-        }
-
-        .lgpd-box .link-politica {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 0.6rem 1.8rem;
-            border-radius: 40px;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-top: 0.5rem;
-            transition: 0.2s;
-        }
-
-        .lgpd-box .link-politica:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        .footer {
-            margin-top: 3rem;
-            border-top: 2px solid rgba(255, 255, 255, 0.15);
-            padding-top: 2rem;
-            text-align: center;
-            font-size: 0.95rem;
-            opacity: 0.8;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-
-        .footer a {
-            color: white;
-            text-decoration: underline 1px dotted rgba(255,255,255,0.4);
-            text-underline-offset: 4px;
-        }
-
-        .footer a:hover {
-            opacity: 1;
-            text-decoration: underline solid white;
-        }
-
-        /* Bloco de prazos */
-        .bloco-prazos {
-            background: rgba(190, 0, 0, 0.65);
-            backdrop-filter: blur(3px);
-            padding: 2rem 2.2rem;
-            border-radius: 30px 8px 30px 8px;
-            margin: 2rem 0 1.5rem 0;
-            border: 1px solid rgba(255, 200, 200, 0.25);
-            box-shadow: 0 8px 0 rgba(100, 0, 0, 0.4);
-        }
-
-        .bloco-prazos h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .bloco-prazos h2::before {
-            content: "⏳";
-            font-size: 2rem;
-        }
-
-        .bloco-prazos p {
-            font-size: 1.15rem;
-            opacity: 0.95;
-            margin-bottom: 0.8rem;
-        }
-
-        .bloco-prazos strong {
-            color: #ffdddd;
-            font-weight: 600;
-        }
-
-        .bloco-prazos .dica {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 0.8rem 1.5rem;
-            border-radius: 40px;
-            display: inline-block;
-            margin-top: 0.4rem;
-            border-left: 4px solid #ffa5a5;
-        }
-
-        /* ========== POP-UP ========== */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .popup-overlay.ativo {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .popup {
-            background: #cc0000;
-            max-width: 480px;
-            width: 90%;
-            padding: 2.5rem 2rem;
-            border-radius: 40px 12px 40px 12px;
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-            transform: scale(0.8);
-            transition: transform 0.4s ease;
-            position: relative;
-        }
-
-        .popup-overlay.ativo .popup {
-            transform: scale(1);
-        }
-
-        .popup .fechar-popup {
-            position: absolute;
-            top: 12px;
-            right: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: 0.2s;
-            background: none;
-            border: none;
-            color: white;
-            font-weight: 300;
-        }
-
-        .popup .fechar-popup:hover {
-            opacity: 1;
-            transform: rotate(90deg);
-        }
-
-        .popup .icone-popup {
-            font-size: 4rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .popup h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
-        }
-
-        .popup p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 1.8rem;
-            line-height: 1.5;
-        }
-
-        .popup .btn-popup {
-            display: inline-block;
-            background: white;
-            color: #cc0000 !important;
-            padding: 1rem 3rem;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-decoration: none;
-            border: 2px solid white;
-            transition: 0.15s;
-            box-shadow: 0 6px 0 #880000;
-        }
-
-        .popup .btn-popup:hover {
-            background: #ffe6e6;
-            transform: scale(1.03);
-            color: #990000 !important;
-            box-shadow: 0 8px 0 #660000;
-        }
-
-        .popup .btn-popup .whatsapp-icon {
-            margin-right: 8px;
-        }
-
-        @media (max-width: 700px) {
-            .header-top {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 1rem;
-            }
-            .header-top h1 {
-                font-size: 2.2rem;
-                padding-left: 0.8rem;
-                border-left-width: 4px;
-            }
-            .btn-solicitar-top {
-                text-align: center;
-                white-space: normal;
-                padding: 0.8rem 1.5rem;
-                font-size: 1.1rem;
-            }
-            .popup {
-                padding: 2rem 1.5rem;
-            }
-            .popup h2 {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 1.5rem 1rem;
-            }
-            .subtitulo {
-                font-size: 1rem;
-                padding-left: 0.5rem;
-            }
-            .cta-box {
-                padding: 1.8rem 1rem;
-            }
-            .cta-box h2 {
-                font-size: 1.6rem;
-            }
-            .secao h2 {
-                font-size: 1.7rem;
-            }
-            .card h3 {
-                font-size: 1.4rem;
-            }
-            .bloco-prazos h2 {
-                font-size: 1.6rem;
-            }
-            .bloco-prazos {
-                padding: 1.5rem 1.2rem;
-            }
-            .lgpd-box h2 {
-                font-size: 1.6rem;
-            }
-            .lgpd-box {
-                padding: 1.5rem 1.2rem;
-            }
-            .depoimentos-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Repasul Veículos | Seminovos e Usados em Gravataí RS</title>
+
+<meta name="description" content="Compre, venda ou troque seu veículo na Repasul Veículos. Seminovos com procedência garantida, financiamento facilitado e atendimento especializado em Gravataí RS.">
+
+<meta name="keywords" content="repasul veículos, carros seminovos gravataí, carros usados gravataí, financiamento veículos gravataí">
+
+<meta name="author" content="Repasul Veículos">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#0d1117;
+color:#fff;
+line-height:1.7;
+}
+
+header{
+background:#000;
+position:sticky;
+top:0;
+z-index:999;
+padding:20px 0;
+border-bottom:1px solid #222;
+}
+
+.container{
+width:90%;
+max-width:1200px;
+margin:auto;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:30px;
+font-weight:700;
+}
+
+.logo span{
+color:#0077ff;
+}
+
+.menu{
+display:flex;
+gap:25px;
+list-style:none;
+}
+
+.menu a{
+color:white;
+text-decoration:none;
+font-weight:500;
+}
+
+.hero{
+height:90vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+background:
+linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
+url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80');
+background-size:cover;
+background-position:center;
+}
+
+.hero h1{
+font-size:60px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:22px;
+max-width:800px;
+margin:auto;
+margin-bottom:30px;
+}
+
+.btn{
+display:inline-block;
+padding:15px 35px;
+background:#0077ff;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
+margin:10px;
+transition:.3s;
+}
+
+.btn:hover{
+background:#0057c7;
+}
+
+section{
+padding:90px 0;
+}
+
+.section-title{
+font-size:42px;
+text-align:center;
+margin-bottom:50px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:#161b22;
+padding:30px;
+border-radius:12px;
+border:1px solid #222;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card h3{
+margin-bottom:15px;
+color:#0077ff;
+}
+
+.about{
+text-align:center;
+max-width:900px;
+margin:auto;
+font-size:18px;
+}
+
+.inventory{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:25px;
+}
+
+.car{
+background:#161b22;
+border-radius:12px;
+overflow:hidden;
+}
+
+.car img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.car-content{
+padding:20px;
+}
+
+.car-content h3{
+margin-bottom:10px;
+}
+
+.car-content p{
+margin-bottom:8px;
+}
+
+.contact{
+text-align:center;
+}
+
+.contact p{
+margin-bottom:10px;
+}
+
+footer{
+background:#000;
+padding:40px;
+text-align:center;
+border-top:1px solid #222;
+}
+
+.whatsapp{
+position:fixed;
+bottom:25px;
+right:25px;
+width:65px;
+height:65px;
+background:#25D366;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+text-decoration:none;
+color:white;
+box-shadow:0 0 20px rgba(0,0,0,.4);
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:38px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.menu{
+display:none;
+}
+
+.section-title{
+font-size:32px;
+}
+
+}
+</style>
+
+<script type="application/ld+json">
+{
+"@context":"https://schema.org",
+"@type":"AutoDealer",
+"name":"Repasul Veículos",
+"legalName":"REPASUL VEICULOS LTDA",
+"taxID":"51.731.732/0001-92",
+"telephone":"+55 51 98010-7050",
+"email":"repasulveiculos@outlook.com",
+"address":{
+"@type":"PostalAddress",
+"streetAddress":"Av. Dorival Candido Luz de Oliveira, 7050",
+"addressLocality":"Gravataí",
+"addressRegion":"RS",
+"postalCode":"94070-000",
+"addressCountry":"BR"
+}
+}
+</script>
+
 </head>
+
 <body>
-    <!-- ===== POP-UP ===== -->
-    <div class="popup-overlay" id="popup">
-        <div class="popup">
-            <button class="fechar-popup" id="fecharPopup" aria-label="Fechar">✕</button>
-            <div class="icone-popup">💬</div>
-            <h2>Fale agora com um especialista!</h2>
-            <p>
-                Perdeu dinheiro com golpe?<br />
-                Clique abaixo e inicie sua restituição agora mesmo.
-            </p>
-            <a href="https://wa.me/5511920187292" target="_blank" class="btn-popup">
-                <span class="whatsapp-icon">📩</span> FALAR NO WHATSAPP
-            </a>
-            <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.6;">
-                Atendimento 100% sigiloso e sem compromisso
-            </p>
-        </div>
-    </div>
 
-    <div class="container">
-        <!-- HEADER com botão "SOLICITAR RESTITUIÇÃO" no início -->
-        <header>
-            <div class="header-top">
-                <h1>⚡ Restituição de Golpes</h1>
-                <a href="https://wa.me/5511920187292" target="_blank" class="btn-solicitar-top">📩 SOLICITAR RESTITUIÇÃO</a>
-            </div>
-            <div class="subtitulo">
-                <strong>R$ 4,2 milhões</strong> já recuperados · Atendimento especializado e sigiloso
-            </div>
-        </header>
+<header>
+<div class="container">
 
-        <!-- Destaques rápidos -->
-        <div class="grid-destaques">
-            <div class="card">
-                <h3><span class="destaque-numero">+R$ 4,2M</span></h3>
-                <p>já restituídos aos clientes nos últimos 12 meses</p>
-            </div>
-            <div class="card">
-                <h3><span class="destaque-numero">87%</span></h3>
-                <p>de êxito em ações de restituição de golpes virtuais</p>
-            </div>
-            <div class="card">
-                <h3><span class="destaque-numero">⚡</span></h3>
-                <p>atendimento ágil e estratégia personalizada para cada caso</p>
-            </div>
-        </div>
+<nav>
 
-        <!-- Sobre restituição -->
-        <div class="secao">
-            <h2>O que é a restituição de golpes?</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 1.2rem;">
-                A restituição é o direito de reaver valores ou bens perdidos em decorrência de fraudes, estelionatos, 
-                phishing, clonagem de cartões, investimentos falsos ou qualquer modalidade de golpe financeiro. 
-                Nossa atuação é 100% voltada para a <strong>recuperação judicial e extrajudicial</strong> do seu patrimônio.
-            </p>
-            <p style="background: rgba(0,0,0,0.15); padding: 0.8rem 1.5rem; border-radius: 40px; display: inline-block; border: 1px solid rgba(255,255,255,0.1);">
-                ✅ Atuamos em todo o território nacional · sigilo e ética garantidos
-            </p>
-        </div>
+<div class="logo">
+REPASUL <span>VEÍCULOS</span>
+</div>
 
-        <!-- Lista de golpes comuns -->
-        <div style="margin: 1.2rem 0 1rem 0;">
-            <h2 style="font-size: 2rem; font-weight: 600; display: flex; align-items: center; gap: 0.8rem;">
-                <span>🕵️</span> Golpes que ajudamos a reverter
-            </h2>
-            <ul class="lista-golpes">
-                <li>Phishing e engenharia social (falsos bancários, boletos fraudados)</li>
-                <li>Clonagem de cartões e contas digitais</li>
-                <li>Investimentos em esquemas de pirâmide ou criptomoedas fantasmas</li>
-                <li>Golpe do falso leilão, do intermediário e do "príncipe"</li>
-                <li>Fraudes em compras online e marketplaces</li>
-                <li>Extorsão e sequestro-relâmpago (via PIX/transferências)</li>
-            </ul>
-        </div>
+<ul class="menu">
+<li><a href="#sobre">Sobre</a></li>
+<li><a href="#servicos">Serviços</a></li>
+<li><a href="#estoque">Estoque</a></li>
+<li><a href="#contato">Contato</a></li>
+</ul>
 
-        <!-- Bloco de prazos e cuidados -->
-        <div class="bloco-prazos">
-            <h2>Prazos e cuidados essenciais</h2>
-            <p>
-                <strong>O tempo é seu maior aliado.</strong> Quanto mais rápido você reunir os comprovantes, 
-                prints e boletins de ocorrência, maiores as chances de êxito na restituição. 
-                A maioria dos bancos e instituições financeiras possui <strong>prazo de até 90 dias</strong> 
-                para contestação de transações não reconhecidas, mas muitos casos já foram resolvidos 
-                em menos de 48 horas com a abordagem correta.
-            </p>
-            <p>
-                Além disso, fique atento: <strong>nunca forneça senhas ou tokens</strong> a terceiros, 
-                mesmo que se apresentem como funcionários do banco. Guarde todos os registros de comunicação 
-                com a instituição financeira e, se possível, formalize um boletim de ocorrência o quanto antes.
-            </p>
-            <div class="dica">
-                💡 Dica: mantenha um arquivo organizado com todos os extratos, e-mails e mensagens 
-                relacionadas ao golpe — isso acelera a análise do seu caso.
-            </div>
-        </div>
+</nav>
 
-        <!-- SEÇÃO DE DEPOIMENTOS -->
-        <div style="margin: 2.5rem 0 1.5rem 0;">
-            <h2 style="font-size: 2.2rem; font-weight: 600; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem;">
-                <span>💬</span> Depoimentos de clientes
-            </h2>
-            <div class="depoimentos-grid">
-                <div class="depoimento-card">
-                    <div class="estrelas">★★★★★</div>
-                    <p>"Recuperei 92% do valor que perdi em um golpe de investimento. A equipe foi transparente e ágil, conseguiram rastrear e bloquear os ativos em menos de 72h."</p>
-                    <span class="cliente">— M.A.S., maio/2025</span>
-                </div>
-                <div class="depoimento-card">
-                    <div class="estrelas">★★★★★</div>
-                    <p>"Fui vítima de clonagem de cartão e perdi R$ 8.500. Em menos de 15 dias já tinha o valor restituído na minha conta. Recomendo demais!"</p>
-                    <span class="cliente">— C.R., fevereiro/2025</span>
-                </div>
-                <div class="depoimento-card">
-                    <div class="estrelas">★★★★★</div>
-                    <p>"Caí em um golpe de phishing pelo WhatsApp. A assessoria me orientou em cada passo e conseguiu reverter a transação em tempo recorde."</p>
-                    <span class="cliente">— T.S., janeiro/2025</span>
-                </div>
-            </div>
-        </div>
+</div>
+</header>
 
-        <!-- SEÇÃO LGPD E POLÍTICA DE PRIVACIDADE -->
-        <div class="lgpd-box">
-            <h2>Política de Privacidade e LGPD</h2>
-            <p>
-                A <strong>RestituiGolpes</strong> respeita sua privacidade e está comprometida com a proteção dos seus dados pessoais, 
-                em conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018)</strong>.
-            </p>
-            <ul>
-                <li>Seus dados são coletados apenas para atendimento e análise do seu caso.</li>
-                <li>Não compartilhamos suas informações com terceiros sem seu consentimento.</li>
-                <li>Você pode solicitar a exclusão ou correção dos seus dados a qualquer momento.</li>
-                <li>Armazenamos seus dados com segurança e por tempo estritamente necessário.</li>
-            </ul>
-            <p style="margin-top: 0.5rem; font-size: 0.95rem; opacity: 0.85;">
-                Para mais informações, entre em contato conosco pelo WhatsApp.
-            </p>
-            <a href="https://wa.me/5511920187292" target="_blank" class="link-politica">📄 Solicitar informações sobre meus dados</a>
-        </div>
+<section class="hero">
 
-        <!-- CALL TO ACTION principal -->
-        <div class="cta-box">
-            <h2>🔔 Perdeu dinheiro com golpe?</h2>
-            <p>Não espere. Quanto antes agir, maiores as chances de restituição integral.</p>
-            <a href="https://wa.me/5511920187292" target="_blank" class="botao-principal">📩 SOLICITAR RESTITUIÇÃO</a>
-            <p style="margin-top: 1.2rem; font-size: 1rem; opacity: 0.8;">Atendimento 100% sigiloso · sem compromisso</p>
-        </div>
+<div class="container">
 
-        <!-- Rodapé -->
-        <div class="footer">
-            <span>© 2026 · RestituiGolpes</span>
-            <a href="https://wa.me/5511920187292" target="_blank">Política de Privacidade</a>
-            <a href="https://wa.me/5511920187292" target="_blank">LGPD</a>
-            <a href="https://wa.me/5511920187292" target="_blank">Depoimentos</a>
-            <a href="https://wa.me/5511920187292" target="_blank">Canais de atendimento</a>
-            <span style="opacity: 0.7;">📞 (11) 92018-7292</span>
-        </div>
+<h1>Seu Próximo Carro Está na Repasul Veículos</h1>
 
-        <p style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.6; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
-            Este site é informativo e não substitui consulta jurídica. Cada caso é único.
-        </p>
-    </div>
+<p>
+Seminovos selecionados, procedência garantida,
+financiamento facilitado e atendimento especializado.
+</p>
 
-    <!-- ===== SCRIPT DO POP-UP ===== -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const popup = document.getElementById('popup');
-            const fechar = document.getElementById('fecharPopup');
+<a href="#estoque" class="btn">Ver Estoque</a>
 
-            // Mostra o pop-up após 1.5 segundos
-            setTimeout(function() {
-                popup.classList.add('ativo');
-            }, 1500);
+<a href="https://wa.me/5551980107050" class="btn">
+Falar no WhatsApp
+</a>
 
-            // Fechar ao clicar no X
-            fechar.addEventListener('click', function() {
-                popup.classList.remove('ativo');
-            });
+</div>
 
-            // Fechar ao clicar fora do pop-up (no overlay)
-            popup.addEventListener('click', function(e) {
-                if (e.target === popup) {
-                    popup.classList.remove('ativo');
-                }
-            });
+</section>
 
-            // Fechar com a tecla ESC
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && popup.classList.contains('ativo')) {
-                    popup.classList.remove('ativo');
-                }
-            });
-        });
-    </script>
+<section id="sobre">
+
+<div class="container">
+
+<h2 class="section-title">Sobre Nós</h2>
+
+<div class="about">
+
+<p>
+A Repasul Veículos atua no mercado automotivo oferecendo veículos seminovos e usados cuidadosamente selecionados. Nosso compromisso é proporcionar uma experiência segura, transparente e confiável para quem deseja comprar, vender ou trocar seu veículo.
+</p>
+
+<br>
+
+<p>
+Com atendimento especializado, avaliação justa e diversas opções de financiamento, ajudamos nossos clientes a realizar o melhor negócio.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="servicos">
+
+<div class="container">
+
+<h2 class="section-title">Nossos Serviços</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Venda de Veículos</h3>
+<p>Seminovos selecionados com garantia e procedência.</p>
+</div>
+
+<div class="card">
+<h3>Compra do Seu Veículo</h3>
+<p>Avaliação justa e transparente.</p>
+</div>
+
+<div class="card">
+<h3>Troca com Troco</h3>
+<p>Facilitamos a negociação.</p>
+</div>
+
+<div class="card">
+<h3>Financiamento</h3>
+<p>Parcerias com as principais financeiras.</p>
+</div>
+
+<div class="card">
+<h3>Consignação</h3>
+<p>Venda seu carro com segurança.</p>
+</div>
+
+<div class="card">
+<h3>Consultoria Automotiva</h3>
+<p>Atendimento especializado.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="estoque">
+
+<div class="container">
+
+<h2 class="section-title">Estoque em Destaque</h2>
+
+<div class="inventory">
+
+<div class="car">
+
+<img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=80">
+
+<div class="car-content">
+
+<h3>Volkswagen T-Cross</h3>
+
+<p><strong>Ano:</strong> 2024</p>
+
+<p><strong>Km:</strong> Consulte</p>
+
+<p><strong>Valor:</strong> Consulte</p>
+
+<a href="https://wa.me/5551980107050" class="btn">
+Solicitar Informações
+</a>
+
+</div>
+
+</div>
+
+<div class="car">
+
+<img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80">
+
+<div class="car-content">
+
+<h3>Chevrolet Tracker</h3>
+
+<p><strong>Ano:</strong> 2024</p>
+
+<p><strong>Km:</strong> Consulte</p>
+
+<p><strong>Valor:</strong> Consulte</p>
+
+<a href="https://wa.me/5551980107050" class="btn">
+Solicitar Informações
+</a>
+
+</div>
+
+</div>
+
+<div class="car">
+
+<img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80">
+
+<div class="car-content">
+
+<h3>Fiat Pulse</h3>
+
+<p><strong>Ano:</strong> 2024</p>
+
+<p><strong>Km:</strong> Consulte</p>
+
+<p><strong>Valor:</strong> Consulte</p>
+
+<a href="https://wa.me/5551980107050" class="btn">
+Solicitar Informações
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="container">
+
+<h2 class="section-title">Por Que Escolher a Repasul?</h2>
+
+<div class="grid">
+
+<div class="card">✓ Procedência Garantida</div>
+<div class="card">✓ Veículos Revisados</div>
+<div class="card">✓ Atendimento Personalizado</div>
+<div class="card">✓ Financiamento Facilitado</div>
+<div class="card">✓ Segurança Jurídica</div>
+<div class="card">✓ Documentação Simplificada</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="contato">
+
+<div class="container contact">
+
+<h2 class="section-title">Contato</h2>
+
+<p><strong>REPASUL VEICULOS LTDA</strong></p>
+
+<p>CNPJ: 51.731.732/0001-92</p>
+
+<p>Av. Dorival Cândido Luz de Oliveira, 7050</p>
+
+<p>Bom Princípio - Gravataí/RS</p>
+
+<p>CEP 94070-000</p>
+
+<p>Telefone: (51) 3469-3650</p>
+
+<p>WhatsApp: (51) 98010-7050</p>
+
+<p>E-mail: repasulveiculos@outlook.com</p>
+
+<br>
+
+<a href="https://wa.me/5551980107050" class="btn">
+Falar com Especialista
+</a>
+
+</div>
+
+</section>
+
+<footer>
+
+<p>
+© 2026 Repasul Veículos - Todos os Direitos Reservados
+</p>
+
+</footer>
+
+<a href="https://wa.me/5551980107050" class="whatsapp">
+💬
+</a>
+
 </body>
 </html>
